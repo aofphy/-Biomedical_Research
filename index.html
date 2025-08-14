@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Pixels to Prognosis: Bridging Advanced AI and Biomedical Imaging</title>
+    <!-- 
+    INSTRUCTIONS FOR ADDING YOUR OWN IMAGES:
+    
+    1. Extract images from your documents (Word/PDF) and save them in the 'images' folder
+    2. Replace the animated visual elements with actual images by:
+       - Change <div class="image-container"> sections
+       - Replace with: <img src="images/your_image.jpg" alt="Description">
+    3. Sample images are provided in the images/ folder as SVG examples
+    4. Recommended image formats: JPG, PNG, SVG
+    5. Optimal image sizes: 800x600px for main visuals, 400x300px for smaller elements
+    
+    Key images to replace:
+    - Neural network diagram (Slide 1)
+    - OCT vs Fundus comparison (Slide 3)  
+    - AI evolution timeline (Slide 4)
+    - OCT processing pipeline (Slide 5)
+    - Performance charts (Slide 6)
+    - Foundation model architecture (Slide 7)
+    -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: rgb(236, 223, 204);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            padding: 60px;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: rgb(165, 182, 141);
+        }
+
+        h1 {
+            font-size: 3.2em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 40px;
+            text-align: center;
+            border-bottom: 3px solid rgb(218, 131, 89);
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 2.2em;
+            font-weight: 600;
+            color: rgb(165, 182, 141);
+            margin-bottom: 25px;
+        }
+
+        .subtitle {
+            font-size: 1.8em;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        .presenter-info {
+            text-align: center;
+            font-size: 1.4em;
+            color: #34495e;
+            margin: 30px 0;
+        }
+
+        .date {
+            text-align: center;
+            font-size: 1.2em;
+            color: #95a5a6;
+            margin-bottom: 40px;
+        }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bullet-points {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-points li {
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            padding-left: 40px;
+            position: relative;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        .bullet-points li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: rgb(165, 182, 141);
+            font-size: 1.2em;
+        }
+
+        .sub-bullets {
+            margin-top: 15px;
+            margin-left: 30px;
+        }
+
+        .sub-bullets li {
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            color: #555;
+        }
+
+        .sub-bullets li::before {
+            content: '•';
+            color: rgb(218, 131, 89);
+        }
+
+        .highlight-box {
+            background: rgb(165, 182, 141);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight-box h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .image-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal styles for image expansion */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.7);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .close:hover {
+            background: rgba(232, 112, 85, 0.8);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .image-caption {
+            font-size: 1.1em;
+            color: #555;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .neural-network-visual {
+            background: rgb(165, 182, 141);
+            height: 300px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgb(252, 250, 238);
+            border-radius: 15px;
+        }
+
+        .pipeline-step {
+            background: rgb(165, 182, 141);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .pipeline-arrow {
+            font-size: 2em;
+            color: rgb(218, 131, 89);
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: white;
+            border: 2px solid rgb(218, 131, 89);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: rgb(165, 182, 141);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: rgba(52, 73, 94, 0.8);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(52, 73, 94, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .challenge-impact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .challenge, .opportunity {
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .challenge {
+            background: rgb(218, 131, 89);
+            color: white;
+        }
+
+        .opportunity {
+            background: rgb(165, 182, 141);
+            color: white;
+        }
+
+        .timeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgb(252, 250, 238);
+            border-radius: 15px;
+        }
+
+        .timeline-item {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -50%;
+            width: 100%;
+            height: 3px;
+            background: rgb(218, 131, 89);
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-icon {
+            background: rgb(218, 131, 89);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: bold;
+        }
+
+        .key-takeaways {
+            background: rgb(165, 182, 141);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .key-takeaways h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .acknowledgments {
+            text-align: center;
+            background: rgb(252, 250, 238);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .contact-info {
+            font-size: 1.2em;
+            color: rgb(165, 182, 141);
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+                width: 95%;
+            }
+            
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2.2em; }
+            h3 { font-size: 1.8em; }
+            
+            .bullet-points li {
+                font-size: 1.2em;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active">
+            <!-- Logo positioned at top-right -->
+            <div style="position: absolute; top: 20px; left: 20px; z-index: 5;">
+                <img src="images/logo.png" alt="Institution Logo" style="max-width: 300px; max-height: 300px; object-fit: contain;">
+            </div>
+            
+            <div class="content">
+                <h1>From Pixels to Prognosis</h1>
+                <div class="subtitle">Bridging Advanced AI and Biomedical Imaging</div>
+                <div class="subtitle" style="font-size: 1.4em; margin-top: -20px;">Leveraging Foundational Models for Custom OCT and Fundus Image Analysis</div>
+                
+                <div class="presenter-info">
+                    <strong>Presenter:</strong> Ittipon Fonkaew | AIMS : School of Physics SUT
+                </div>
+                
+                <div class="date">August 15, 2025</div>
+                
+                <div class="neural-network-visual">
+                    <div style="font-size: 2em; margin-bottom: 10px;">Artificial Intelligence in Medical Imaging</div>
+                    <div style="display: flex; align-items: center; gap: 30px;">
+                        <div style="text-align: center;">
+                            <div style="margin-bottom: 10px;"><img src="images/3d-oct-scan-middleton-opticians-leeds.png" alt="3D OCT Scan" style="max-width: 120px; max-height: 120px; border-radius: 10px; object-fit: contain;"></div>
+                            <div>3D OCT, MRI, CT</div>
+                        </div>
+                        <div style="font-size: 2em;">➔</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3em;">⚙️</div>
+                            <div>AI Processing</div>
+                        </div>
+                        <div style="font-size: 2em;">➔</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3em;">👁️</div>
+                            <div>Diagnostics</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 1.5em;">⬇</div>
+                    <div style="margin-top: 10px; font-size: 2.5em;">💡</div>
+                    <div>Clinical Insight</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Introducing My Research on Applied Machine Learning and AI -->
+        <div class="slide">
+            <h2>Applied Machine Learning and AI Research Portfolio</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 Research Focus Areas</h3>
+                <p>Bridging theoretical machine learning with practical applications across materials science, agriculture, energy, finance, and biomedical instrumentation.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🔬 1. My Expertise</h3>
+                    <div class="image-container">
+                        <img src="images/introMself1.png" alt="Research Expertise Overview" class="expandable-image" onclick="expandImage(this)">
+                        <div class="image-caption">Core competencies in machine learning and AI applications</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>📊 2. Applied ML to Computational Materials Science</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                        <div class="image-container" style="margin: 0;">
+                            <img src="images/introMself2.png" alt="Materials Science ML Application" class="expandable-image" onclick="expandImage(this)" style="height: 120px; object-fit: cover;">
+                        </div>
+                        <div class="image-container" style="margin: 0;">
+                            <img src="images/introMself3.png" alt="Computational Materials Research" class="expandable-image" onclick="expandImage(this)" style="height: 120px; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <img src="images/introMself4.png" alt="Advanced Materials Analysis" class="expandable-image" onclick="expandImage(this)">
+                        <div class="image-caption">Machine learning applications in materials discovery and characterization</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgb(252, 250, 238); padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <h3 style="color: rgb(165, 182, 141); margin-bottom: 20px;">🏭 3. Applied AI in Industry</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div style="text-align: center;">
+                        <h4 style="color: rgb(218, 131, 89); margin-bottom: 15px;">🌾 Agriculture</h4>
+                        <div class="image-container" style="margin: 0;">
+                            <img src="images/introMself5.png" alt="Agricultural AI Applications" class="expandable-image" onclick="expandImage(this)" style="height: 150px; object-fit: cover;">
+                            <div class="image-caption">AI-driven agricultural optimization</div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <h4 style="color: rgb(218, 131, 89); margin-bottom: 15px;">⚡ Energy & Finance</h4>
+                        <div class="image-container" style="margin: 0;">
+                            <img src="images/introMself6.jpg" alt="Energy and Finance AI" class="expandable-image" onclick="expandImage(this)" style="height: 150px; object-fit: cover;">
+                            <div class="image-caption">ML applications in energy systems and financial modeling</div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <h4 style="color: rgb(218, 131, 89); margin-bottom: 15px;">🔬 Semiconductor QC</h4>
+                        <div class="image-container" style="margin: 0;">
+                            <img src="images/lFjcSS4.png" alt="Semiconductor Quality Control" class="expandable-image" onclick="expandImage(this)" style="height: 120px; object-fit: cover;">
+                            <div class="image-caption">AI-powered semiconductor quality control</div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <iframe width="100%" height="150" src="https://www.youtube.com/embed/OHlTlKwtpyE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 8px;"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgb(165, 182, 141); color: white; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
+                <h4 style="color: white; margin-bottom: 10px;">🎯 Research Impact</h4>
+                <p style="font-size: 1.1em; margin: 0;">Translating cutting-edge machine learning research into real-world solutions across diverse industrial applications, from materials discovery to biomedical diagnostics.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Core Challenge & The Agenda -->
+        <div class="slide">
+            <h2>The Data-Rich, Information-Poor Problem in Medicine</h2>
+            
+            <div class="challenge-impact">
+                <div class="challenge">
+                    <h3>🚫 The Challenge</h3>
+                    <p>Biomedical instruments generate massive, high-dimensional data. Manual interpretation is a bottleneck—it's slow, subjective, and can't scale.</p>
+                </div>
+                
+                <div class="opportunity">
+                    <h3>✅ The Opportunity</h3>
+                    <p>Use advanced AI to automate analysis, uncover hidden patterns, and create predictive models for patient care.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>📋 Today's Talk Agenda:</h3>
+                <ul class="bullet-points" style="color: white;">
+                    <li><strong>The Data:</strong> A CS perspective on OCT & Fundus data</li>
+                    <li><strong>The AI Toolkit:</strong> From CNNs and GradCAM to Transformers</li>
+                    <li><strong>Case Study 1:</strong> AI-Powered OCT for Tissue Diagnostics & Skin Analysis</li>
+                    <li><strong>Case Study 2:</strong> End-to-End Diabetic Retinopathy Classification System</li>
+                    <li><strong>The Future:</strong> Foundation Models & Integrated Clinical AI</li>
+                </ul>
+            </div>
+
+            <div class="image-container">
+                <div style="background: rgb(236, 223, 204); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 20px; left: 20px; font-size: 4em;">📊</div>
+                    <div style="position: absolute; bottom: 20px; right: 20px; font-size: 3em;">⚡</div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 10px;">Data Funnel</div>
+                        <div style="font-size: 1em;">Petabytes → Knowledge</div>
+                    </div>
+                </div>
+                <div class="image-caption">Funnel Diagram: Transforming massive biomedical data into actionable clinical decisions</div>
+            </div>
+        </div>
+
+        <!-- Slide 4: A Computer Scientist's View of Ophthalmic Data -->
+        <div class="slide">
+            <h2>Understanding the Input: Data Structures in Imaging</h2>
+            
+            <div class="two-column">
+                <div>
+                    <h3>🔬 Optical Coherence Tomography (OCT)</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Data Structure:</strong> 3D Volumetric Data [width, height, depth]</li>
+                        <li>Essentially a stack of 2D images (B-scans)</li>
+                        <li><strong>Computational Challenge:</strong>
+                            <ul class="sub-bullets">
+                                <li>High dimensionality</li>
+                                <li>Spatial correlation</li>
+                                <li>Significant speckle noise</li>
+                                <li>Requires 3D-aware algorithms</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3>👁️ Fundus Photography</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Data Structure:</strong> High-Resolution 2D Image [width, height, channels]</li>
+                        <li><strong>Computational Challenge:</strong>
+                            <ul class="sub-bullets">
+                                <li>Variability in illumination</li>
+                                <li>Focus variations</li>
+                                <li>Patient feature differences</li>
+                                <li>Fine details (microaneurysms)</li>
+                                <li>Global structures</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 40px;">
+                <div class="image-container">
+                    <img src="images/oct_bscan.png" alt="OCT B-scan example" style="max-width: 110%; height: 200px;">
+                    <div class="image-caption">OCT B-scan showing tissue layers and depth information</div>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/fundus_normal.png" alt="Fundus photography example" style="max-width: 130%; height: 200px;">
+                    <div class="image-caption">Fundus photograph highlighting anatomical features</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: The AI Toolkit -->
+        <div class="slide">
+            <h2>The Evolution of Models for Visual Understanding</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">CNN</div>
+                    <h4>Convolutional Neural Networks</h4>
+                    <p>Segmentation (U-Net) & Classification (ResNet, VGG19)</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">ViT</div>
+                    <h4>Vision Transformers</h4>
+                    <p>Global context modeling with attention (Swin Transformer)</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">LLM</div>
+                    <h4>Large Language Models</h4>
+                    <p>Multimodal analysis and reasoning</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🔍 Key AI Techniques:</h3>
+                <ul class="bullet-points" style="color: white;">
+                    <li><strong>CNNs:</strong> The workhorse for medical imaging - ideal for segmentation and classification</li>
+                    <li><strong>GradCAM:</strong> Creates heatmaps showing where models look, enabling "virtual biomarkers"</li>
+                    <li><strong>Vision Transformers:</strong> Apply attention mechanism to image patches for better global context</li>
+                    <li><strong>Foundation Models:</strong> Pre-trained on vast datasets, moving from classification to rich descriptive analysis</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Convolutional Neural Networks (CNNs) -->
+        <div class="slide">
+            <h2>Convolutional Neural Networks (CNNs)</h2>
+            
+            <div class="highlight-box">
+                <h3>🧠 The Workhorse for Medical Imaging</h3>
+                <p>CNNs are the fundamental building blocks of medical image analysis, excelling at both segmentation tasks (identifying tissue boundaries) and classification tasks (diagnosing conditions).</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🔧 Key Capabilities</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Automatic Feature Learning:</strong> Learns hierarchical patterns from raw pixels</li>
+                        <li><strong>Translation Invariance:</strong> Recognizes features regardless of position</li>
+                        <li><strong>Parameter Sharing:</strong> Efficient learning with fewer parameters</li>
+                        <li><strong>Medical Applications:</strong> U-Net for segmentation, ResNet/VGG for classification</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/CNNs.gif" alt="CNN Architecture Animation" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">CNN architecture showing convolution, pooling, and fully connected layers</div>
+                </div>
+            </div>
+
+            <div style="background: rgb(252, 250, 238); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">💡 Why CNNs Excel in Medical Imaging:</h4>
+                <p style="color: #555; font-size: 1.2em; line-height: 1.6;">Medical images have spatial hierarchies (pixels → edges → textures → organs), which CNNs naturally capture through their layered architecture. This makes them ideal for tasks like tumor detection, organ segmentation, and disease classification.</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: GradCAM - Explainable AI -->
+        <div class="slide">
+            <h2>GradCAM: Making AI Decisions Transparent</h2>
+            
+            <div class="highlight-box">
+                <h3>🔍 Virtual Biomarkers Through Visualization</h3>
+                <p>Gradient-weighted Class Activation Mapping (GradCAM) creates heatmaps showing exactly where AI models focus their attention, enabling "virtual biomarkers" for medical analysis.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>⚙️ How GradCAM Works</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Gradient Analysis:</strong> Computes gradients of target class w.r.t feature maps</li>
+                        <li><strong>Importance Weighting:</strong> Weights feature maps by their importance</li>
+                        <li><strong>Heatmap Generation:</strong> Creates visual explanation of model decisions</li>
+                        <li><strong>Clinical Translation:</strong> Identifies regions of diagnostic importance</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/gradcam.jpeg" alt="GradCAM Example" style="max-width: 100%; height: 200px; object-fit: contain;">
+                    <div class="image-caption">GradCAM heatmap highlighting regions of interest</div>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div class="image-container">
+                    <img src="images/Grad-CAM-images-from-the-deep-learning-models-identifying-COVID-19-Normal-and-Pneumonia.png" alt="GradCAM COVID-19 Detection" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">GradCAM for COVID-19 detection in chest X-rays</div>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/Gradient-weighted-Class-Activation-Mapping-Grad-CAM-technique-allows-the.png" alt="GradCAM Technique Visualization" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">GradCAM technique workflow and visualization</div>
+                </div>
+            </div>
+
+            <div class="image-container" style="margin-top: 20px;">
+                <img src="images/Visualization-Using-Grad-CAM-Gradient-weighted-Class-Activation-Mapping-The-cataract_Q320 (1).jpg" alt="GradCAM Cataract Detection" style="max-width: 100%; height: 200px; object-fit: contain;">
+                <div class="image-caption">GradCAM visualization for cataract detection showing attention regions</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Vision Transformers -->
+        <div class="slide">
+            <h2>Vision Transformers: The Attention Revolution</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 Global Context Through Attention</h3>
+                <p>Vision Transformers (ViTs) apply the revolutionary attention mechanism to image patches, enabling better modeling of global context and long-range dependencies in medical images.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🔄 Key Innovations</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Patch-based Processing:</strong> Treats image patches as sequence tokens</li>
+                        <li><strong>Self-Attention:</strong> Captures relationships between all image regions</li>
+                        <li><strong>Global Receptive Field:</strong> Sees entire image from the first layer</li>
+                        <li><strong>Scalability:</strong> Performance improves with larger datasets</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/vision-transformer.png" alt="Vision Transformer Architecture" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Vision Transformer architecture showing patch embedding and attention</div>
+                </div>
+            </div>
+
+            <div class="image-container" style="margin-top: 30px;">
+                <img src="images/An interpretable transformer network for the retinal disease classification using optical coherence tomography.png" alt="Transformer for OCT Analysis" style="max-width: 100%; height: 300px; object-fit: contain;">
+                <div class="image-caption">Interpretable transformer network for retinal disease classification using OCT imaging</div>
+            </div>
+
+            <div style="background: rgb(252, 250, 238); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">🏆 Advantages in Medical Imaging:</h4>
+                <p style="color: #555; font-size: 1.2em; line-height: 1.6;">Unlike CNNs that build understanding locally, Transformers can immediately relate distant image regions. This is crucial for medical diagnosis where subtle patterns across the entire image (e.g., vessel patterns in fundus images) determine the diagnosis.</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Foundation Models -->
+        <div class="slide">
+            <h2>Foundation Models: The Future of Medical AI</h2>
+            
+            <div class="highlight-box">
+                <h3>🚀 From Task-Specific to Universal Intelligence</h3>
+                <p>Foundation models represent a paradigm shift from narrow, task-specific AI to broad, generalizable intelligence trained on vast datasets and capable of few-shot learning across multiple medical domains.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🌟 Revolutionary Capabilities</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Pre-trained Knowledge:</strong> Learns from massive datasets across domains</li>
+                        <li><strong>Transfer Learning:</strong> Adapts to new tasks with minimal data</li>
+                        <li><strong>Multimodal Understanding:</strong> Processes text, images, and structured data</li>
+                        <li><strong>Emergent Abilities:</strong> Develops unexpected capabilities at scale</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/foundation-models-explained.jpeg" alt="Foundation Models Concept" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Foundation models: Pre-train once, adapt to many medical tasks</div>
+                </div>
+            </div>
+
+            <div style="background: rgb(165, 182, 141); color: white; padding: 25px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: white; margin-bottom: 15px;">🔮 Medical AI's Future:</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px;">
+                    <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <div style="font-size: 2em; margin-bottom: 10px;">🏥</div>
+                        <div style="font-size: 0.9em;">Unified Clinical Assistant</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <div style="font-size: 2em; margin-bottom: 10px;">📊</div>
+                        <div style="font-size: 0.9em;">Multi-Modal Analysis</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                        <div style="font-size: 2em; margin-bottom: 10px;">🎯</div>
+                        <div style="font-size: 0.9em;">Personalized Medicine</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #fff8e1; padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: #f57c00; margin-bottom: 15px;">⚡ Impact on Healthcare:</h4>
+                <p style="color: #555; font-size: 1.1em; line-height: 1.6;">Foundation models will enable a single AI system to perform diagnosis across multiple specialties, generate reports, suggest treatments, and even predict patient outcomes - moving from narrow AI tools to comprehensive clinical partners.</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Case Study 1: OCT Analysis -->
+        <div class="slide">
+            <h2>Case Study 1: AI-Powered OCT for Tissue Diagnostics</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 The Task</h3>
+                <p>Develop an AI pipeline to analyze complex 3D OCT data, from segmenting human skin to identifying biomarkers in animal tissue.</p>
+            </div>
+
+            <div class="pipeline">
+                <div class="pipeline-step">Raw OCT Data</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">U-Net Segmentation</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Image Flattening</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">GradCAM Analysis</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Virtual Biomarkers</div>
+            </div>
+
+            <ul class="bullet-points">
+                <li><strong>Segmentation:</strong> U-Net architecture automatically segments skin layers from OCT images</li>
+                <li><strong>Image Flattening & Measurement:</strong> Segmented layer enables consistent skin thickness measurement</li>
+                <li><strong>Virtual Biomarkers with GradCAM:</strong> ResNet152 + GradCAM highlights critical regions for tissue classification (aorta, liver, pancreas)</li>
+            </ul>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-number">100%</span>
+                    <div class="stat-label">Automated Pipeline</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">μm</span>
+                    <div class="stat-label">Precision Measurement</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">XAI</span>
+                    <div class="stat-label">Explainable Results</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Project Summary - OCT Skin Analysis -->
+        <div class="slide">
+            <h2>Development of AI-Powered OCT Skin Analysis System</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 Project Summary</h3>
+                <p>Development of an automated pipeline for processing and analyzing Optical Coherence Tomography (OCT) skin images using advanced AI techniques.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>📋 Main Objectives</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Automated Pipeline:</strong> Develop automated processing system for OCT skin images</li>
+                        <li><strong>AI Segmentation:</strong> Utilize AI to accurately segment skin layers</li>
+                        <li><strong>Quantitative Analysis:</strong> Extract key features including thickness, texture, and porosity</li>
+                        <li><strong>Clinical Tool:</strong> Create standardized tool to reduce visual assessment variability</li>
+                        <li><strong>Medical Impact:</strong> Support diagnosis and treatment monitoring for skin diseases</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/u_net_strcture.png" alt="U-Net Architecture" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">U-Net neural network structure - the AI backbone of our project</div>
+                </div>
+            </div>
+
+            <div class="image-container" style="margin-top: 30px;">
+                <img src="images/oct_skin.png" alt="OCT Skin Example" style="max-width: 100%; height: 200px; object-fit: contain;">
+                <div class="image-caption">Example OCT image of human skin showing detailed layer structure</div>
+            </div>
+
+            <div style="background: rgb(252, 250, 238); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">💡 Innovation Highlights:</h4>
+                <p style="color: #555; font-size: 1.2em; line-height: 1.6;">This project bridges the gap between advanced OCT imaging technology and practical clinical applications, providing dermatologists with precise, quantitative tools for skin assessment and disease monitoring.</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Methodology & Key Results -->
+        <div class="slide">
+            <h2>Methodology & Key Results</h2>
+            
+            <div class="highlight-box">
+                <h3>🔬 Research Methodology</h3>
+                <p>Comprehensive approach combining data preparation, AI training, and advanced image analysis techniques for precise skin layer quantification.</p>
+            </div>
+
+            <div style="background: rgb(252, 250, 238); padding: 25px; border-radius: 15px; margin: 20px 0;">
+                <h3 style="color: #2c3e50; margin-bottom: 20px;">📊 Data Preparation & AI Training</h3>
+                <ul class="bullet-points">
+                    <li><strong>Dataset:</strong> 501 OCT images standardized to 512×512 pixels</li>
+                    <li><strong>U-Net Model:</strong> Trained with manually annotated images for layer segmentation</li>
+                    <li><strong>Performance:</strong> Achieved >98% validation accuracy in automated skin layer segmentation</li>
+                </ul>
+            </div>
+
+            <div class="two-column">
+                <div class="image-container">
+                    <img src="images/compare_smoot.png" alt="Before/After Image Comparison" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">Image flattening results: Original vs smoothed surface</div>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/model_trainnin_loss.png" alt="Model Training Performance" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">Training and validation loss/accuracy curves</div>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 20px;">
+                <div class="image-container">
+                    <img src="images/skin_heat_map.png" alt="2D Skin Thickness Heatmap" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">2D heatmap visualization of skin thickness distribution</div>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/centroid_heatmap.png" alt="Centroid Heatmap Analysis" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">Centroid heatmap for enface image quantitative analysis</div>
+                </div>
+            </div>
+
+            <div style="background: rgb(218, 131, 89); color: white; padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: white; margin-bottom: 15px;">🏆 Key Achievements:</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5em; margin-bottom: 5px;">✅</div>
+                        <div style="font-size: 0.9em;">Automated boundary delineation and thickness measurement</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5em; margin-bottom: 5px;">📈</div>
+                        <div style="font-size: 0.9em;">Generated comprehensive thickness and texture maps</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Conclusion & Future Work -->
+        <div class="slide">
+            <h2>Conclusion & Future Directions</h2>
+            
+            <div class="key-takeaways">
+                <h3>🎯 Project Conclusions</h3>
+                <ul class="bullet-points" style="color: white;">
+                    <li><strong>Comprehensive Pipeline:</strong> Successfully established end-to-end OCT image analysis system</li>
+                    <li><strong>AI Integration:</strong> Developed accurate and consistent quantitative analysis using advanced AI</li>
+                    <li><strong>Clinical Potential:</strong> Created tools highly beneficial for dermatological research and diagnosis</li>
+                    <li><strong>Standardization:</strong> Provides objective measurements to reduce subjective assessment variability</li>
+                </ul>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div style="background: #FBF3D5; padding: 25px; border-radius: 15px;">
+                    <h4 style="color: #856404; margin-bottom: 15px;">🔬 Future Research Plans</h4>
+                    <ul style="list-style: none; padding: 0; color: #856404;">
+                        <li style="margin-bottom: 10px;">📋 Submit for Human Research Ethics Committee approval</li>
+                        <li style="margin-bottom: 10px;">🏥 Conduct clinical trials for data collection and validation</li>
+                        <li style="margin-bottom: 10px;">⚙️ Refine AI model accuracy using clinical trial data</li>
+                        <li style="margin-bottom: 10px;">🎯 Develop system for practical clinical implementation</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/exampleweb.png" alt="Data Management System Interface" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Web-based data management system interface for clinical deployment</div>
+                </div>
+            </div>
+
+            <div style="background: rgb(165, 182, 141); color: white; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <h4 style="color: white; margin-bottom: 15px;">🚀 Clinical Impact Vision</h4>
+                <p style="font-size: 1.1em; line-height: 1.6; margin: 0;">This AI-powered OCT analysis system represents a significant step toward precision dermatology, offering clinicians objective, quantitative tools for accurate diagnosis, treatment planning, and outcome monitoring in skin diseases.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: #FBF3D5; border-radius: 15px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">🤝 Collaboration Opportunities</h4>
+                <p style="color: #555; font-size: 1.1em;">We welcome partnerships with clinical institutions and researchers interested in advancing AI applications in dermatological imaging and diagnosis.</p>
+            </div>
+        </div>
+
+
+        <!-- Slide 13: GradCAM Case Study - Project Overview & OCT System -->
+        <div class="slide">
+            <h2>Development of AI System for 3D OCT Tissue Analysis</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 Project Objectives</h3>
+                <p>Design and develop an Artificial Intelligence (AI) system for analyzing images from a 3D Optical Coherence Tomography (OCT) system to increase the speed and accuracy of tissue sample analysis for research in Metabolic syndrome, Cancer, and Infectious diseases.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🔬 The Developed OCT System</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Self-built prototype:</strong> Compact, portable design</li>
+                        <li><strong>Cost-effective:</strong> Over 10x more affordable than imported systems</li>
+                        <li><strong>High-resolution:</strong> 10-micrometer precision imaging</li>
+                        <li><strong>Speed:</strong> 3D images captured in under 10 seconds</li>
+                        <li><strong>Non-invasive:</strong> Repeated imaging without tissue damage</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/OCT_diagram_tissue.png" alt="OCT System Diagram" style="max-width: 100%; height: 200px; object-fit: contain;">
+                    <div class="image-caption">Figure 1: Design diagram of the Optical Coherence Tomography system showing optical principles</div>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div class="image-container">
+                    <img src="images/oct_machine.jpg" alt="OCT Machine Prototype" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">Figure 2: Physical appearance of the completed prototype system</div>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/oct_immage_sample_tissue.png" alt="OCT Sample Tissue Images" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">Sample OCT tissue images captured by the system</div>
+                </div>
+            </div>
+
+            <div style="background: rgb(165, 182, 141); color: white; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <h4 style="color: white; margin-bottom: 15px;">🚀 Innovation Highlights:</h4>
+                <p style="font-size: 1.1em; line-height: 1.6; margin: 0;">This system represents a breakthrough in affordable, high-precision tissue analysis, enabling researchers worldwide to access advanced OCT imaging capabilities for biomedical research.</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: AI-Powered Image Analysis with GradCAM -->
+        <div class="slide">
+            <h2>AI-Powered Image Analysis with GradCAM</h2>
+            
+            <div class="highlight-box">
+                <h3>🧠 Methodology Overview</h3>
+                <p>Advanced image processing combines multiple OCT scans using Average Reduction Sampling, then applies GradCAM for explainable AI analysis of tissue classification.</p>
+            </div>
+
+            <div class="pipeline">
+                <div class="pipeline-step">Multiple OCT Scans</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Average Reduction Sampling</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">CNN Classification</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">GradCAM Analysis</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Virtual Biomarkers</div>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🔍 Key Feature Analysis with GradCAM</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Technique:</strong> Gradient-weighted Class Activation Mapping</li>
+                        <li><strong>Models:</strong> CNN architectures (ResNet, VGG)</li>
+                        <li><strong>Output:</strong> Heatmap highlighting AI attention areas</li>
+                        <li><strong>Classification:</strong> Tissue types (liver, kidney, blood vessels)</li>
+                        <li><strong>Innovation:</strong> Virtual Biomarkers for invisible changes</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/flowchart_GRADCAM.png" alt="GradCAM Process Flowchart" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Flowchart of the GradCAM process showing AI workflow</div>
+                </div>
+            </div>
+
+            <div class="image-container" style="margin-top: 30px;">
+                <img src="images/compare_Gradcam_tissue.png" alt="GradCAM vs Normal Images" style="max-width: 100%; height: 200px; object-fit: contain;">
+                <div class="image-caption">Figure 8: Image analyzed by the GradCAM method compared to normal images showing heatmap results on various organ tissues</div>
+            </div>
+
+            <div style="background: #FBF3D5; padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">💡 Virtual Biomarker Innovation:</h4>
+                <p style="color: #555; font-size: 1.2em; line-height: 1.6;">GradCAM heatmaps serve as "Virtual Biomarkers" to track physical changes in tissue that may be invisible to the naked eye, revolutionizing early detection capabilities.</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Case Study - Biofilm Analysis & Results -->
+        <div class="slide">
+            <h2>Case Study: Biofilm Monitoring & Future Directions</h2>
+            
+            <div class="highlight-box">
+                <h3>🦠 Biofilm Monitoring Experiment</h3>
+                <p>Cultured microbes on slides and monitored changes with OCT for 7 days. GradCAM successfully detected and visualized changes within biofilm layers corresponding to culture duration.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>📊 Experimental Results</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Duration:</strong> 7-day monitoring period</li>
+                        <li><strong>Detection:</strong> Changes invisible in standard OCT</li>
+                        <li><strong>AI Model:</strong> ResNet152 + GCFFT</li>
+                        <li><strong>Classification:</strong> Biofilm age (Day 1, 5, 7)</li>
+                        <li><strong>Accuracy:</strong> Up to 92.5% classification performance</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/table_performance.png" alt="Performance Results Table" style="max-width: 100%; height: 200px; object-fit: contain;">
+                    <div class="image-caption">Table 1: Performance results showing accuracy of different models</div>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div class="image-container">
+                    <img src="images/analysis_day_tissue_gradcam.png" alt="GradCAM Biofilm Analysis Day 1-7" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">Figure 11A: GradCAM analysis of biofilm layer changes over time</div>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/analysis_day_tissue_gradcam_FFT.png" alt="GradCAM FFT Analysis" style="max-width: 100%; height: 180px; object-fit: contain;">
+                    <div class="image-caption">Figure 11B: Enhanced GradCAM analysis using FFT processing</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #D6A99D, #9CAFAA); color: white; padding: 25px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: white; margin-bottom: 15px;">🔮 Conclusion & Future Directions:</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;">✅ Current Achievement:</div>
+                        <div style="font-size: 0.95em;">GradCAM technique proves highly effective for creating virtual biomarkers to monitor tissue changes</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;">🎯 Future Plans:</div>
+                        <div style="font-size: 0.95em;">Apply technique to identify disease traces by comparing normal vs diseased tissues for clinical diagnosis support</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 15px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">🎯 Clinical Impact Vision</h4>
+                <p style="color: #555; font-size: 1.1em;">This GradCAM-based approach will create powerful diagnostic tools to assist researchers and clinicians in early disease detection and treatment monitoring.</p>
+            </div>
+        </div>
+
+        <!-- Slide 16: Case Study 2: Diabetic Retinopathy -->
+        <div class="slide">
+            <h2>Case Study 2: End-to-End Diabetic Retinopathy System</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 The Challenge</h3>
+                <p>Manual DR screening is slow and requires specialists. An automated system needs to not only classify the disease but also ensure the input image is clinically valid.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>📊 Module 1: Image Screening</h3>
+                    <ul class="sub-bullets">
+                        <li>Template-based correlation filtering</li>
+                        <li>ML-based optic disc & macula detection</li>
+                        <li>Rejects medically unsuitable images</li>
+                        <li><strong>Performance:</strong> 90.6% recall, 6.5% false discovery rate</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3>🧠 Module 2: DR Grading</h3>
+                    <ul class="sub-bullets">
+                        <li>Swin Transformer model</li>
+                        <li>5-stage DR severity classification</li>
+                        <li>SMOTE for class imbalance handling</li>
+                        <li><strong>Performance:</strong> QWK = 0.903</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pipeline">
+                <div class="pipeline-step">Raw Fundus Image</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Quality Screening</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Accept/Reject</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">DR Grading</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Stage 0-4 Output</div>
+            </div>
+
+            <div class="image-container">
+                <img src="images/performance_chart.svg" alt="DR System Performance" style="max-width: 100%; height: 250px;">
+                <div class="image-caption">Performance metrics showing state-of-the-art results for automated DR classification</div>
+            </div>
+        </div>
+
+        <!-- Slide 17: DR Case Study - Introduction & Problem -->
+        <div class="slide">
+            <h2>Diabetic Retinopathy: The Challenge</h2>
+            
+            <div class="highlight-box">
+                <h3>🚨 The Challenge</h3>
+                <p>Diabetic Retinopathy (DR) is a leading cause of irreversible blindness, yet it's often asymptomatic in its early stages. A global shortage of ophthalmologists creates significant delays in diagnosis and treatment.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>📊 Key Problems</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Silent Disease:</strong> Often asymptomatic in early stages</li>
+                        <li><strong>Global Shortage:</strong> Insufficient ophthalmologists worldwide</li>
+                        <li><strong>Geographic Barriers:</strong> Delays in rural and resource-limited areas</li>
+                        <li><strong>Image Quality:</strong> Large volume of unsuitable retinal images</li>
+                        <li><strong>Manual Screening:</strong> Inefficient specialist time allocation</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/compare_fundus_imageN_DR.jpg" alt="Normal vs DR-affected Retina" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Visual comparison: Normal retina vs Diabetic Retinopathy-affected retina</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <h4 style="color: white; margin-bottom: 15px;">🎯 Our Objective:</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;">✅ Automated Quality Screening:</div>
+                        <div style="font-size: 0.95em;">Filter unsuitable images for diagnostic efficiency</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;">📊 Accurate DR Grading:</div>
+                        <div style="font-size: 0.95em;">Classify severity with high clinical accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: #FBF3D5; border-radius: 15px;">
+                <h4 style="color: #856404; margin-bottom: 15px;">💡 Solution Vision</h4>
+                <p style="color: #856404; font-size: 1.1em;">Develop a comprehensive, automated end-to-end system to revolutionize DR screening and diagnosis globally.</p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Image Screening Module -->
+        <div class="slide">
+            <h2>Solution Part 1: Image Screening Module</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 Goal</h3>
+                <p>Automatically filter out unsuitable images to improve diagnostic efficiency and reduce specialist workload by focusing only on clinically viable images.</p>
+            </div>
+
+            <div class="pipeline">
+                <div class="pipeline-step">Raw Fundus Image</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Anatomical Detection</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Quality Classification</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Suitable/Unsuitable</div>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🔧 How It Works</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Anatomical Detection:</strong> Template-based correlation filtering locates optic disc and macula</li>
+                        <li><strong>Quality Classification:</strong> Histogram Gradient Boosting model analyzes structure confidence</li>
+                        <li><strong>Decision Making:</strong> Classifies as "medically suitable" or "unsuitable"</li>
+                        <li><strong>Efficiency Gain:</strong> Eliminates manual screening of poor-quality images</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/figure18_example_M_OPD.jpg" alt="Optic Disc and Macula Detection" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Examples of successful optic disc and macula detection in fundus images</div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-number">0.906</span>
+                    <div class="stat-label">Recall Rate</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">0.065</span>
+                    <div class="stat-label">False Discovery Rate</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">✓</span>
+                    <div class="stat-label">Clinical Benchmark</div>
+                </div>
+            </div>
+
+            <div style="background: #d4edda; padding: 20px; border-radius: 15px; margin-top: 20px; border-left: 5px solid #28a745;">
+                <h4 style="color: #155724; margin-bottom: 15px;">🏆 Key Results:</h4>
+                <p style="color: #155724; font-size: 1.2em; line-height: 1.6;">The screening module achieved clinical-grade performance with 90.6% recall and only 6.5% false discovery rate, meeting benchmarks for reliable diagnostic screening tools.</p>
+            </div>
+
+            <div class="image-container" style="margin-top: 30px;">
+                <img src="images/resulttest_detect.png" alt="Real Data Screening Test Results" style="max-width: 100%; height: 250px; object-fit: contain;">
+                <div class="image-caption">Real data screening test results showing successful detection and classification of fundus image quality in clinical practice</div>
+            </div>
+        </div>
+
+        <!-- Slide 19: DR Grading Module -->
+        <div class="slide">
+            <h2>Solution Part 2: DR Grading Module</h2>
+            
+            <div class="highlight-box">
+                <h3>🎯 Goal</h3>
+                <p>Accurately classify DR severity into five stages, from "No DR" to "Proliferative DR," matching specialist-level diagnostic accuracy.</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🧠 Our Approach</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Architecture:</strong> Swin Transformer as feature extraction backbone</li>
+                        <li><strong>Data Balancing:</strong> SMOTE oversampling for clinical data imbalance</li>
+                        <li><strong>Transfer Learning:</strong> Pre-trained on large general dataset</li>
+                        <li><strong>Fine-Tuning:</strong> Specialized on APTOS 2019 DR dataset</li>
+                        <li><strong>Stage Classification:</strong> 5-level DR severity grading</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/fig34.jpg" alt="Model Fine-tuning Results" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Fine-tuning process showing improved class separation for different DR stages</div>
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-top: 20px;">
+                <h3 style="color: #2c3e50; margin-bottom: 20px;">📊 Technical Innovation</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 10px;">
+                        <h4 style="color: #1565c0; margin-bottom: 10px;">🔄 SMOTE Balancing</h4>
+                        <p style="color: #555; font-size: 0.9em;">Addresses natural imbalance in clinical data where severe cases are fewer</p>
+                    </div>
+                    <div style="background: #f3e5f5; padding: 15px; border-radius: 10px;">
+                        <h4 style="color: #7b1fa2; margin-bottom: 10px;">🎯 Swin Transformer</h4>
+                        <p style="color: #555; font-size: 0.9em;">Powerful deep learning model optimized for medical image analysis</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline" style="margin-top: 30px;">
+                <div class="pipeline-step">Pre-training</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">SMOTE Balancing</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">Fine-tuning</div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">5-Stage Classification</div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Performance & Key Results -->
+        <div class="slide">
+            <h2>Performance & Key Results</h2>
+            
+            <div class="highlight-box">
+                <h3>🏆 A High-Performing System</h3>
+                <p>Our integrated system demonstrated state-of-the-art performance and outperformed previously reported methods in automated DR classification.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-number">0.903</span>
+                    <div class="stat-label">Quadratic Weighted Kappa</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">0.693</span>
+                    <div class="stat-label">F1 Macro Score</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">✓</span>
+                    <div class="stat-label">Expert-Level Agreement</div>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div>
+                    <h3>📈 Performance Highlights</h3>
+                    <ul class="bullet-points">
+                        <li><strong>DR Grading Accuracy:</strong> QWK of 0.903 indicates high agreement with human experts</li>
+                        <li><strong>Early Detection:</strong> Excelled at identifying early-stage DR for preventative screening</li>
+                        <li><strong>Validated Strategies:</strong> Both SMOTE and fine-tuning proved critical for performance</li>
+                        <li><strong>Clinical Readiness:</strong> Meets standards for clinical decision support</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/table11.jpg" alt="Performance Comparison Table" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Performance comparison against human experts and other automated methods</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #00b894, #00a085); color: white; padding: 25px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: white; margin-bottom: 15px;">🔬 Ablation Study Results:</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 5px;">📊</div>
+                        <div style="font-size: 0.9em;">SMOTE Critical</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 5px;">🎯</div>
+                        <div style="font-size: 0.9em;">Fine-tuning Essential</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.5em; margin-bottom: 5px;">🚀</div>
+                        <div style="font-size: 0.9em;">Combined Power</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Conclusion & Future Directions -->
+        <div class="slide">
+            <h2>DR System: Conclusion & Future Directions</h2>
+            
+            <div class="key-takeaways">
+                <h3>🎯 Conclusion</h3>
+                <p style="color: white; font-size: 1.2em; line-height: 1.6;">We have successfully developed and validated an end-to-end system for automated DR classification. The framework is accurate, efficient, and holds significant potential to serve as a decision support tool in clinical practice.</p>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div>
+                    <h3>🔬 Future Work</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Data Enhancement:</strong> Expand dataset with more advanced-stage DR examples</li>
+                        <li><strong>Clinical Integration:</strong> Deploy at SUT and Maharat Nakhon Ratchasima hospitals</li>
+                        <li><strong>Real-world Validation:</strong> Gather feedback from clinical practice</li>
+                        <li><strong>Strategic Growth:</strong> Secure IP and scale nationally</li>
+                        <li><strong>Regional Expansion:</strong> Long-term plans for Southeast Asia</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/workflow.png" alt="End-to-End DR System Workflow" style="max-width: 100%; height: 250px; object-fit: contain;">
+                    <div class="image-caption">Complete workflow: Image Intake → Screening → Grading → Diagnosis</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fd79a8, #e84393); color: white; padding: 25px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: white; margin-bottom: 15px;">🚀 Clinical Impact Potential:</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;">⚡ Efficiency:</div>
+                        <div style="font-size: 0.95em;">Reduce specialist workload through automated screening</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;">🌍 Access:</div>
+                        <div style="font-size: 0.95em;">Enable DR screening in resource-limited areas</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 15px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">💡 Vision Statement</h4>
+                <p style="color: #555; font-size: 1.1em;">Transform DR screening from a specialist-dependent bottleneck to an accessible, automated process that can prevent blindness at scale.</p>
+            </div>
+        </div>
+
+        <!-- Slide 22: The Horizon: Foundation Models -->
+        <div class="slide">
+            <h2>Towards a "LLM multi-modal for Medicine"</h2>
+            
+            <div class="highlight-box">
+                <h3>🚀 The Concept</h3>
+                <p>Train one massive model on a vast, multimodal dataset (OCT, Fundus, pathology reports, EHRs, genomics)</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>✨ The Promise</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Emergent Capabilities:</strong> Uncover novel connections between data types</li>
+                        <li><strong>True Generalization:</strong> Single API for segmentation, classification, report generation</li>
+                        <li><strong>Clinical Integration:</strong> Comprehensive decision support</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3>🏥 Broader Applications</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Drug-Related Problems (DRPs):</strong> LLMs (Gemini, ChatGPT) identify issues in CKD patients</li>
+                        <li><strong>Clinical Decision Support:</strong> Analyze records & prescriptions</li>
+                        <li><strong>Alert Systems:</strong> Flag incorrect dosages, unnecessary drugs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-takeaways">
+                <h3>🔮 Future Integration</h3>
+                <p>Beyond imaging, AI assists clinicians directly through integrated clinical decision support systems that analyze patient records, prescriptions, and multi-modal data to provide comprehensive healthcare insights.</p>
+            </div>
+        </div>
+
+        <!-- Slide 23: Key Findings - High Burden of Drug-Related Problems -->
+        <div class="slide">
+            <h2>Key Findings: High Burden of Drug-Related Problems</h2>
+            
+            <div class="content-grid">
+                <div class="left-panel">
+                    <div class="highlight-box">
+                        <h3>📊 CKD Patient Study Results</h3>
+                        <ul>
+                            <li><strong>Sample Size:</strong> 386 CKD patients</li>
+                            <li><strong>DRP Prevalence:</strong> 97.9% of patients experienced at least one DRP</li>
+                            <li><strong>Average DRPs per patient:</strong> 4.58 ± 2.57</li>
+                            <li><strong>Total DRPs identified:</strong> 1,768</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="key-takeaways">
+                        <h3>🤖 AI Correlation with Pharmacist Assessment</h3>
+                        <p><strong>High Agreement:</strong> AI-driven analysis showed strong correlation with clinical pharmacist evaluations in identifying and categorizing drug-related problems in CKD patients.</p>
+                    </div>
+                </div>
+                
+                <div class="right-panel">
+                    <img src="images/DRP33.jpg" alt="Drug-Related Problems Analysis Chart" class="expandable-image" onclick="expandImage(this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Conclusion & Proposed Solution - Establishing a CKD Clinic -->
+        <div class="slide">
+            <h2>Conclusion & Proposed Solution: Establishing a CKD Clinic</h2>
+            
+            <div class="content-grid">
+                <div class="left-panel">
+                    <div class="highlight-box">
+                        <h3>🏥 Proposed CKD Clinic Integration</h3>
+                        <ul>
+                            <li><strong>AI-Enhanced Screening:</strong> Automated DRP detection using LLMs</li>
+                            <li><strong>Clinical Decision Support:</strong> Real-time medication optimization</li>
+                            <li><strong>Workflow Efficiency:</strong> Streamlined patient care pathway</li>
+                            <li><strong>Quality Improvement:</strong> Reduced adverse drug events</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="key-takeaways">
+                        <h3>💡 Expected Outcomes</h3>
+                        <p><strong>Efficiency Gains:</strong> 40% reduction in medication review time, improved patient safety outcomes, and enhanced clinical decision-making through AI-pharmacist collaboration.</p>
+                    </div>
+                </div>
+                
+                <div class="right-panel">
+                    <img src="images/work_flowDRP.jpg" alt="CKD Clinic Workflow Diagram" class="expandable-image" onclick="expandImage(this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Introducing MED-Gemma: Medical Foundation Model -->
+        <div class="slide">
+            <h2>MED-Gemma: Specialized Medical Foundation Model</h2>
+            
+            <div class="highlight-box">
+                <h3>🚀 Introducing MED-Gemma</h3>
+                <p>A family of specialized medical foundation models based on Google's Gemma architecture, specifically fine-tuned for medical applications and clinical reasoning tasks.</p>
+            </div>
+
+            <div class="image-container" style="margin: 20px 0;">
+                <img src="images/MedGemma-0a-Hero.png" alt="MED-Gemma Model Overview" style="max-width: 100%; height: 250px; object-fit: contain;">
+                <div class="image-caption">MED-Gemma: Advanced medical AI models designed for clinical applications and medical reasoning</div>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>🎯 Key Features</h3>
+                    <ul class="bullet-points">
+                        <li><strong>Model Variants:</strong> 4B and 27B parameter versions</li>
+                        <li><strong>Medical Specialization:</strong> Fine-tuned on medical literature and clinical data</li>
+                        <li><strong>Multi-modal Capability:</strong> Text and image understanding</li>
+                        <li><strong>Clinical Reasoning:</strong> Optimized for medical question answering</li>
+                        <li><strong>Cost-Effective:</strong> Competitive performance per dollar</li>
+                    </ul>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/MedGemma-2a-MedQA.width-1250.png" alt="MedQA Performance Results" style="max-width: 100%; height: 200px; object-fit: contain;">
+                    <div class="image-caption">MedQA performance: MedGemma 4B and 27B among best performing models of their size</div>
+                </div>
+            </div>
+
+            <div class="image-container" style="margin-top: 30px;">
+                <img src="images/MedGemma-4a-MedSigLIP.width-1250.png" alt="MedSigLIP Multi-modal Performance" style="max-width: 100%; height: 200px; object-fit: contain;">
+                <div class="image-caption">MedSigLIP: Multi-modal medical image understanding and reasoning capabilities</div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: white; margin-bottom: 15px;">💡 Clinical Applications:</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">🩺</div>
+                        <div style="font-size: 0.9em;">Clinical Decision Support</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">📋</div>
+                        <div style="font-size: 0.9em;">Medical Report Analysis</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">🖼️</div>
+                        <div style="font-size: 0.9em;">Medical Image Interpretation</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #FBF3D5; padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h4 style="color: #856404; margin-bottom: 15px;">📊 Performance Insights:</h4>
+                <p style="color: #856404; font-size: 1.1em; line-height: 1.6;">Cost estimates based on legacy.lmarena.ai price analysis and together.ai pricing data. MED-Gemma demonstrates exceptional performance-per-dollar ratio for medical applications, making advanced AI accessible for healthcare institutions.</p>
+            </div>
+        </div>
+
+        <!-- Slide 26: Emerging Medical AI Platforms -->
+        <div class="slide">
+            <h2>Emerging Medical AI Platforms & Initiatives</h2>
+            
+            <div class="highlight-box">
+                <h3>🌟 Leading Edge Medical AI Development</h3>
+                <p>The medical AI landscape is rapidly evolving with specialized platforms and orchestration systems designed to transform healthcare delivery and diagnostic capabilities.</p>
+            </div>
+
+            <div class="two-column">
+                <div style="background: #e8f5e8; padding: 25px; border-radius: 15px;">
+                    <h3 style="color: #2c5234;">🔬 OpenMed Platform</h3>
+                    <ul class="bullet-points" style="color: #2c5234;">
+                        <li><strong>Open Health AI:</strong> Community-driven medical AI development</li>
+                        <li><strong>Collaborative Framework:</strong> Open-source medical AI tools and models</li>
+                        <li><strong>Healthcare Accessibility:</strong> Democratizing AI for global health</li>
+                        <li><strong>Research Integration:</strong> Bridging academic and clinical applications</li>
+                    </ul>
+                    
+                    <div style="background: #d4edda; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center;">
+                        <div style="font-size: 1.1em; font-weight: bold; color: #155724; margin-bottom: 10px;">🔗 Learn More:</div>
+                        <a href="https://huggingface.co/blog/MaziyarPanahi/open-health-ai" target="_blank" style="color: #0066cc; text-decoration: underline; font-weight: bold;">
+                            huggingface.co/blog/MaziyarPanahi/open-health-ai
+                        </a>
+                    </div>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 25px; border-radius: 15px;">
+                    <h3 style="color: #1565c0;">🏥 Microsoft AI Diagnostic Orchestrator</h3>
+                    <ul class="bullet-points" style="color: #1565c0;">
+                        <li><strong>MAI-DxO System:</strong> Advanced diagnostic orchestration platform</li>
+                        <li><strong>Medical Superintelligence:</strong> Pathway to AI-assisted diagnosis</li>
+                        <li><strong>Integration Framework:</strong> Seamless healthcare system integration</li>
+                        <li><strong>Clinical Workflow:</strong> Optimized for medical practice efficiency</li>
+                    </ul>
+                    
+                    <div style="background: #bbdefb; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center;">
+                        <div style="font-size: 1.1em; font-weight: bold; color: #0d47a1; margin-bottom: 10px;">🔗 Learn More:</div>
+                        <a href="https://microsoft.ai/new/the-path-to-medical-superintelligence/" target="_blank" style="color: #0066cc; text-decoration: underline; font-weight: bold;">
+                            microsoft.ai/new/the-path-to-medical-superintelligence/
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <h4 style="color: white; margin-bottom: 15px;">🚀 Impact on Medical AI Landscape:</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">🌍</div>
+                        <div style="font-size: 0.9em;">Global Accessibility</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">⚡</div>
+                        <div style="font-size: 0.9em;">Advanced Integration</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 1.8em; margin-bottom: 8px;">🎯</div>
+                        <div style="font-size: 0.9em;">Clinical Excellence</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-takeaways" style="margin-top: 30px;">
+                <h3>💡 Key Implications</h3>
+                <p style="color: white; font-size: 1.1em; line-height: 1.6;">These platforms represent the convergence of open-source collaboration and enterprise-grade medical AI, creating unprecedented opportunities for advancing healthcare through intelligent diagnostic systems and democratized AI access.</p>
+            </div>
+        </div>
+
+
+        <!-- Slide 27: Conclusion & Acknowledgments -->
+        <div class="slide">
+            <h2>Bridging AI & Biomedical Imaging: A Comprehensive Vision</h2>
+            
+            <div class="key-takeaways">
+                <h3>🎯 Comprehensive Achievements & Insights</h3>
+                <ul class="bullet-points" style="color: white;">
+                    <li><strong>Technical Foundation:</strong> Demonstrated progression from CNNs to Vision Transformers to Foundation Models</li>
+                    <li><strong>OCT Innovation:</strong> Developed complete pipeline from 3D tissue analysis to automated skin layer segmentation (>98% accuracy)</li>
+                    <li><strong>GradCAM Excellence:</strong> Created virtual biomarkers achieving 92.5% accuracy in biofilm monitoring with explainable AI</li>
+                    <li><strong>DR System Mastery:</strong> End-to-end diabetic retinopathy classification with 0.903 QWK and clinical-grade screening</li>
+                    <li><strong>Emerging Landscape:</strong> Positioned research within context of OpenMed, Microsoft MAI-DxO, and MED-Gemma platforms</li>
+                </ul>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div style="background: #e8f5e8; padding: 25px; border-radius: 15px;">
+                    <h4 style="color: #2c5234; margin-bottom: 15px;">🔬 Research Impact</h4>
+                    <ul style="list-style: none; padding: 0; color: #2c5234;">
+                        <li style="margin-bottom: 10px;">📊 <strong>3 Major Case Studies:</strong> OCT skin analysis, GradCAM tissue monitoring, DR classification</li>
+                        <li style="margin-bottom: 10px;">🎯 <strong>Clinical Validation:</strong> Real-world testing with hospital partnerships</li>
+                        <li style="margin-bottom: 10px;">⚡ <strong>Technological Advancement:</strong> From specialized CNNs to foundation model integration</li>
+                        <li style="margin-bottom: 10px;">🌍 <strong>Global Context:</strong> Aligned with international medical AI initiatives</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 25px; border-radius: 15px;">
+                    <h4 style="color: #1565c0; margin-bottom: 15px;">🚀 Future Trajectory</h4>
+                    <ul style="list-style: none; padding: 0; color: #1565c0;">
+                        <li style="margin-bottom: 10px;">🏥 <strong>Clinical Integration:</strong> Deployment in partner hospitals for real-world validation</li>
+                        <li style="margin-bottom: 10px;">🔬 <strong>Platform Evolution:</strong> Integration with emerging medical AI ecosystems</li>
+                        <li style="margin-bottom: 10px;">📈 <strong>Scale & Impact:</strong> From research prototypes to clinical decision support tools</li>
+                        <li style="margin-bottom: 10px;">🌐 <strong>Collaborative Vision:</strong> Contributing to the global medical AI community</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 15px; margin: 30px 0;">
+                <h4 style="color: white; margin-bottom: 20px; text-align: center;">💡 Transformative Vision Realized</h4>
+                <p style="font-size: 1.3em; line-height: 1.7; text-align: center; margin: 0;">
+                    From pixels to prognosis, we have demonstrated that AI can transform biomedical imaging from data collection to clinical insight. 
+                    Our journey spans fundamental algorithms, practical implementations, and integration with next-generation medical AI platforms—
+                    creating a comprehensive bridge between cutting-edge technology and meaningful healthcare impact.
+                </p>
+            </div>
+
+            <div class="acknowledgments" style="background: #f8f9fa; padding: 30px; border-radius: 15px;">
+                <h3 style="color: #2c3e50;">🙏 Acknowledgments</h3>
+                <p style="color: #555; font-size: 1.1em; line-height: 1.6; margin-bottom: 20px;">
+                    Deep gratitude to our research collaborators, laboratory team members, clinical partners at SUT and Maharat Nakhon Ratchasima Hospital, 
+                    and funding agencies for their invaluable support in advancing AI applications in biomedical imaging and clinical practice.
+                </p>
+                
+                <div class="contact-info" style="color: #d63031; font-size: 1.2em; text-align: center;">
+                    📧 Questions & Collaboration: <strong>ittipon@sut.ac.th</strong>
+                    <br><br>
+                    🔬 AIMS Laboratory - School of Physics, SUT
+                    <br>
+                    🌟 <em>"Bridging AI Innovation with Clinical Excellence"</em>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #00b894, #00a085); border-radius: 15px; color: white;">
+                <div style="font-size: 2.5em; margin-bottom: 15px;">🎉</div>
+                <div style="font-size: 2em; font-weight: bold; margin-bottom: 10px;">Thank You for Your Attention!</div>
+                <div style="font-size: 1.3em; opacity: 0.9;">Ready for Questions & Discussion</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for image expansion -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Navigation and Controls -->
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">12</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                previousSlide();
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'Home') {
+                showSlide(0);
+            } else if (e.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let startX = 0;
+        let endX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            endX = e.changedTouches[0].clientX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (startX - endX > 50) {
+                nextSlide();
+            } else if (endX - startX > 50) {
+                previousSlide();
+            }
+        }
+
+        // Image expansion functionality
+        function expandImage(imgElement) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            modal.style.display = 'block';
+            modalImg.src = imgElement.src;
+            modalImg.alt = imgElement.alt;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Add click event to all images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.image-container img');
+            images.forEach(function(img) {
+                img.addEventListener('click', function() {
+                    expandImage(this);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
