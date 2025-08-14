@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#f0f0f0"/>
+  
+  <!-- OCT B-scan simulation -->
+  <rect x="20" y="50" width="360" height="200" fill="#2c3e50" rx="5"/>
+  
+  <!-- Tissue layers -->
+  <path d="M30 80 Q200 85 370 80" stroke="#e74c3c" stroke-width="2" fill="none"/>
+  <path d="M30 120 Q200 125 370 120" stroke="#f39c12" stroke-width="2" fill="none"/>
+  <path d="M30 160 Q200 165 370 160" stroke="#27ae60" stroke-width="2" fill="none"/>
+  <path d="M30 200 Q200 205 370 200" stroke="#3498db" stroke-width="2" fill="none"/>
+  
+  <!-- Speckle noise simulation -->
+  <circle cx="80" cy="100" r="1" fill="#ecf0f1" opacity="0.6"/>
+  <circle cx="150" cy="140" r="1" fill="#ecf0f1" opacity="0.6"/>
+  <circle cx="250" cy="110" r="1" fill="#ecf0f1" opacity="0.6"/>
+  <circle cx="320" cy="180" r="1" fill="#ecf0f1" opacity="0.6"/>
+  
+  <!-- Labels -->
+  <text x="20" y="30" font-family="Arial" font-size="16" fill="#2c3e50" font-weight="bold">OCT B-scan Cross-section</text>
+  <text x="20" y="270" font-family="Arial" font-size="12" fill="#7f8c8d">Epidermis</text>
+  <text x="80" y="270" font-family="Arial" font-size="12" fill="#7f8c8d">Dermis</text>
+  <text x="140" y="270" font-family="Arial" font-size="12" fill="#7f8c8d">Hypodermis</text>
+</svg>
